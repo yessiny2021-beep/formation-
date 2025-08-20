@@ -1,0 +1,28 @@
+@model MvcMovie.Models.Formation
+
+@{
+    ViewData["Title"] = "Ajouter Formation";
+}
+
+<h1>Ajouter une Formation</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Titre"></label>
+        <input asp-for="Titre" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateDebut"></label>
+        <input asp-for="DateDebut" type="date" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateFin"></label>
+        <input asp-for="DateFin" type="date" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-success">Créer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

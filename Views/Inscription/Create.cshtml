@@ -1,0 +1,19 @@
+@model MvcMovie.Models.Inscription
+
+@{
+    ViewData["Title"] = "Nouvelle Inscription";
+}
+
+<h2>Nouvelle Inscription</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label>Employé</label>
+        <select asp-for="EmployeId" class="form-control" asp-items="@(new SelectList(ViewBag.Employes, "Id", "Nom"))"></select>
+    </div>
+    <div class="form-group">
+        <label>Formation</label>
+        <select asp-for="FormationId" class="form-control" asp-items="@(new SelectList(ViewBag.Formations, "Id", "Titre"))"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Inscrire</button>
+</form>

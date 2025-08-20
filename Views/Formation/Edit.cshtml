@@ -1,0 +1,29 @@
+@model MvcMovie.Models.Formation
+
+@{
+    ViewData["Title"] = "Modifier Formation";
+}
+
+<h1>Modifier Formation</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Titre"></label>
+        <input asp-for="Titre" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateDebut"></label>
+        <input asp-for="DateDebut" type="date" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateFin"></label>
+        <input asp-for="DateFin" type="date" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-success">Enregistrer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

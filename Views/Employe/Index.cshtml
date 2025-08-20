@@ -1,0 +1,40 @@
+@model IEnumerable<MvcMovie.Models.Employe>
+
+@{
+    ViewData["Title"] = "Liste des employés";
+}
+
+<h1>Employés</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Ajouter un employé</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Poste</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var employe in Model)
+    {
+        <tr>
+            <td>@employe.Id</td>
+            <td>@employe.Nom</td>
+            <td>@employe.Prenom</td>
+            <td>@employe.Email</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@employe.Id" class="btn btn-sm btn-warning">Modifier</a>
+                <a asp-action="Details" asp-route-id="@employe.Id" class="btn btn-sm btn-info">Détails</a>
+                <a asp-action="Delete" asp-route-id="@employe.Id" class="btn btn-sm btn-danger">Supprimer</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

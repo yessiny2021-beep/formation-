@@ -1,0 +1,9 @@
+/home/yessin/Desktop/company/MvcMovie/obj/Debug/net8.0/MvcMovie.csproj.AssemblyReference.cache
+/home/yessin/Desktop/company/MvcMovie/obj/Debug/net8.0/MvcMovie.GeneratedMSBuildEditorConfig.editorconfig
+/home/yessin/Desktop/company/MvcMovie/obj/Debug/net8.0/MvcMovie.AssemblyInfoInputs.cache
+/home/yessin/Desktop/company/MvcMovie/obj/Debug/net8.0/MvcMovie.AssemblyInfo.cs
+/home/yessin/Desktop/company/MvcMovie/obj/Debug/net8.0/MvcMovie.csproj.CoreCompileInputs.cache
+/home/yessin/Desktop/company/MvcMovie/obj/Debug/net8.0/MvcMovie.MvcApplicationPartsAssemblyInfo.cs
+/home/yessin/Desktop/company/MvcMovie/obj/Debug/net8.0/MvcMovie.MvcApplicationPartsAssemblyInfo.cache
+/home/yessin/Desktop/company/MvcMovie/obj/Debug/net8.0/MvcMovie.RazorAssemblyInfo.cache
+/home/yessin/Desktop/company/MvcMovie/obj/Debug/net8.0/MvcMovie.RazorAssemblyInfo.cs

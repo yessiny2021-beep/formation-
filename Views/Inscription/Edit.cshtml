@@ -1,0 +1,34 @@
+@model MvcMovie.Models.Inscription
+
+@{
+    ViewData["Title"] = "Modifier inscription";
+}
+
+<h1>Modifier inscription</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="FormationId">Formation</label>
+        <select asp-for="FormationId" asp-items="ViewBag.FormationId" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EmployeId">Employé</label>
+        <select asp-for="EmployeId" asp-items="ViewBag.EmployeId" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Statut">Statut</label>
+        <select asp-for="Statut" asp-items="Html.GetEnumSelectList(typeof(MvcMovie.Models.StatutInscription))" class="form-control"></select>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Presence" class="form-check-input" />
+        <label asp-for="Presence" class="form-check-label"></label>
+    </div>
+
+    <button type="submit" class="btn btn-success">Enregistrer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

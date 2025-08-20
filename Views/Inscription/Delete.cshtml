@@ -1,0 +1,34 @@
+@model MvcMovie.Models.Inscription
+
+@{
+    ViewData["Title"] = "Supprimer inscription";
+}
+
+<h1>Supprimer inscription</h1>
+
+<h3>Voulez-vous vraiment supprimer cette inscription ?</h3>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Formation</dt>
+        <dd class="col-sm-9">@Model.Formation?.Titre</dd>
+
+        <dt class="col-sm-3">Employé</dt>
+        <dd class="col-sm-9">@Model.Employe?.Nom @Model.Employe?.Prenom</dd>
+
+        <dt class="col-sm-3">Date inscription</dt>
+        <dd class="col-sm-9">@Model.DateInscription.ToLocalTime()</dd>
+
+        <dt class="col-sm-3">Statut</dt>
+        <dd class="col-sm-9">@Model.Statut</dd>
+
+        <dt class="col-sm-3">Présence</dt>
+        <dd class="col-sm-9">@(Model.Presence ? "Oui" : "Non")</dd>
+    </dl>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Supprimer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>

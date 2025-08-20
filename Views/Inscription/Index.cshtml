@@ -1,0 +1,37 @@
+@model IEnumerable<MvcMovie.Models.Inscription>
+
+@{
+    ViewData["Title"] = "Liste des Inscriptions";
+}
+
+<h2>Liste des Inscriptions</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Employé</th>
+            <th>Formation</th>
+            <th>Date d'inscription</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Employe.Nom @item.Employe.Prenom</td>
+            <td>@item.Formation.Titre</td>
+            <td>@item.DateInscription.ToString("dd/MM/yyyy")</td>
+            <td>
+                <!-- Bouton pour télécharger certificat -->
+                <a asp-action="Certificate" asp-route-id="@item.Id" 
+                   class="btn btn-success btn-sm">
+                    🎓 Télécharger Certificat
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">➕ Nouvelle Inscription</a>

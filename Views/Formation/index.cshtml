@@ -1,0 +1,39 @@
+@model IEnumerable<MvcMovie.Models.Formation>
+
+@{
+    ViewData["Title"] = "Formations";
+}
+
+<h1>Formations</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Ajouter une Formation</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Date Début</th>
+            <th>Date Fin</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Titre</td>
+                <td>@item.Description</td>
+                <td>@item.DateDebut.ToShortDateString()</td>
+                <td>@item.DateFin.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Modifier</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Détails</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

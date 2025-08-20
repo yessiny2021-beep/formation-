@@ -1,0 +1,22 @@
+@model MvcMovie.Models.Formation
+
+@{
+    ViewData["Title"] = "Supprimer Formation";
+}
+
+<h1>Supprimer Formation</h1>
+
+<h3>Voulez-vous vraiment supprimer cette formation ?</h3>
+
+<div>
+    <h4>@Model.Titre</h4>
+    <p>@Model.Description</p>
+    <p>Date Début: @Model.DateDebut.ToShortDateString()</p>
+    <p>Date Fin: @Model.DateFin.ToShortDateString()</p>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Supprimer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>
