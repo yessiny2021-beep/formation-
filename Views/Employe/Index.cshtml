@@ -1,40 +1,189 @@
 @model IEnumerable<MvcMovie.Models.Employe>
 
 @{
-    ViewData["Title"] = "Liste des employés";
+    ViewData["Title"] = "Gestion des Employés";
 }
 
-<h1>Employés</h1>
+<div class="animate-fade-in">
+    <!-- En-tête avec titre et bouton -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">
+            <i class="fas fa-users me-3"></i>
+            Gestion des Employés
+        </h1>
+        <a asp-action="Create" class="btn btn-primary btn-lg shine-effect">
+            <i class="fas fa-user-plus me-2"></i>
+            Ajouter un Employé
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Ajouter un employé</a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Poste</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var employe in Model)
+    @if (Model == null || !Model.Any())
     {
-        <tr>
-            <td>@employe.Id</td>
-            <td>@employe.Nom</td>
-            <td>@employe.Prenom</td>
-            <td>@employe.Email</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@employe.Id" class="btn btn-sm btn-warning">Modifier</a>
-                <a asp-action="Details" asp-route-id="@employe.Id" class="btn btn-sm btn-info">Détails</a>
-                <a asp-action="Delete" asp-route-id="@employe.Id" class="btn btn-sm btn-danger">Supprimer</a>
-            </td>
-        </tr>
+        <div class="card text-center py-5">
+            <div class="card-body">
+                <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                <h3 class="text-muted">Aucun employé enregistré</h3>
+                <p class="text-muted">Commencez par ajouter votre premier employé</p>
+                <a asp-action="Create" class="btn btn-primary mt-3">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Créer un employé
+                </a>
+            </div>
+        </div>
     }
-    </tbody>
-</table>
+    else
+    {
+        <!-- Statistiques rapides -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Total Employés</p>
+                                <h3 class="mb-0 fw-bold text-primary">@Model.Count()</h3>
+                            </div>
+                            <div class="rounded-circle p-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-users fa-2x text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Embauches ce mois</p>
+                                <h3 class="mb-0 fw-bold text-success">@Model.Count(e => e.DateEmbauche.Month == DateTime.Now.Month && e.DateEmbauche.Year == DateTime.Now.Year)</h3>
+                            </div>
+                            <div class="rounded-circle p-3" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                <i class="fas fa-calendar-check fa-2x text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Embauches cette année</p>
+                                <h3 class="mb-0 fw-bold text-warning">@Model.Count(e => e.DateEmbauche.Year == DateTime.Now.Year)</h3>
+                            </div>
+                            <div class="rounded-circle p-3" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                <i class="fas fa-chart-line fa-2x text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table des employés -->
+        <div class="card shadow-lg border-0">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Liste des Employés
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="fas fa-user me-2"></i>
+                                    Nom
+                                </th>
+                                <th>
+                                    <i class="fas fa-user-tag me-2"></i>
+                                    Prénom
+                                </th>
+                                <th>
+                                    <i class="fas fa-envelope me-2"></i>
+                                    Email
+                                </th>
+                                <th>
+                                    <i class="fas fa-calendar me-2"></i>
+                                    Date Embauche
+                                </th>
+                                <th class="text-center">
+                                    <i class="fas fa-cog me-2"></i>
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var e in Model)
+                            {
+                                <tr class="animate-slide-left">
+                                    <td class="fw-semibold">
+                                        @if (string.IsNullOrWhiteSpace(e.Nom))
+                                        {
+                                            <span class="text-muted">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Non renseigné
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            @e.Nom
+                                        }
+                                    </td>
+                                    <td class="fw-semibold">
+                                        @if (string.IsNullOrWhiteSpace(e.Prenom))
+                                        {
+                                            <span class="text-muted">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Non renseigné
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            @e.Prenom
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="mailto:@e.Email" class="text-decoration-none">
+                                            <i class="fas fa-envelope me-1"></i>
+                                            @e.Email
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info px-3 py-2">
+                                            <i class="fas fa-calendar-day me-1"></i>
+                                            @e.DateEmbauche.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Details" asp-route-id="@e.Id" 
+                                               class="btn btn-sm btn-info" 
+                                               title="Voir les détails">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@e.Id" 
+                                               class="btn btn-sm btn-warning" 
+                                               title="Modifier">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@e.Id" 
+                                               class="btn btn-sm btn-danger" 
+                                               title="Supprimer">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

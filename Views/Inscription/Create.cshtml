@@ -4,16 +4,71 @@
     ViewData["Title"] = "Nouvelle Inscription";
 }
 
+<style>
+    /* Champs input et select foncé avec texte blanc */
+    .input-dark {
+        background-color: #333333 !important;
+        color: white !important;
+    }
+
+    /* Pour le texte sélectionné */
+    .input-dark::selection {
+        background-color: #555555;
+        color: white;
+    }
+
+    /* Pour les selects */
+    .select-dark {
+        background-color: #333333;
+        color: white;
+    }
+
+    /* Option du menu déroulant (lorsqu'il est ouvert) */
+    .select-dark option {
+        background-color: #fff;
+        color: #000;
+    }
+</style>
+
 <h2>Nouvelle Inscription</h2>
 
+@* Affiche les erreurs globales *@
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
 <form asp-action="Create" method="post">
-    <div class="form-group">
-        <label>Employé</label>
-        <select asp-for="EmployeId" class="form-control" asp-items="@(new SelectList(ViewBag.Employes, "Id", "Nom"))"></select>
+    <!-- Employé -->
+    <div class="form-group mb-3">
+        <label class="form-label">Employé</label>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <select asp-for="EmployeId" class="form-control select-dark" 
+                    asp-items="@(new SelectList(ViewBag.Employes, "Id", "Nom"))">
+                <option value="">-- Sélectionner un employé --</option>
+            </select>
+        }
+        else
+        {
+            <input type="hidden" asp-for="EmployeId" value="@ViewBag.EmployeId" />
+            <input type="text" class="form-control input-dark" value="@ViewBag.EmployeNom" disabled />
+        }
+        <span asp-validation-for="EmployeId" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label>Formation</label>
-        <select asp-for="FormationId" class="form-control" asp-items="@(new SelectList(ViewBag.Formations, "Id", "Titre"))"></select>
+
+    <!-- Formation -->
+    <div class="form-group mb-3">
+        <label class="form-label">Formation</label>
+        <select asp-for="FormationId" class="form-control select-dark" 
+                asp-items="@(new SelectList(ViewBag.Formations, "Id", "Titre"))">
+            <option value="">-- Sélectionner une formation --</option>
+        </select>
+        <span asp-validation-for="FormationId" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Inscrire</button>
+
+    <button type="submit" class="btn btn-primary">S'inscrire</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

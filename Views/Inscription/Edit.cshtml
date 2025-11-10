@@ -1,34 +1,108 @@
-@model MvcMovie.Models.Inscription
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using MvcMovie.Data;
+using MvcMovie.Models;
+using QuestPDF.Fluent;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
-@{
-    ViewData["Title"] = "Modifier inscription";
+namespace MvcMovie.Controllers
+{
+    [Authorize(Roles = "Employe,Admin")]
+    public class InscriptionController : Controller
+    {
+        private readonly MvcMovieContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public InscriptionController(MvcMovieContext context, UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
+
+        // GET: Inscriptions
+        public async Task<IActionResult> Index()
+        {
+            var inscriptions = await _context.Inscriptions
+                .Include(i => i.Employe)
+                .Include(i => i.Formation)
+                .ToListAsync();
+
+            return View(inscriptions);
+        }
+
+        // GET: Inscriptions/Create
+        public async Task<IActionResult> Create()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null || user.EmployeId == null)
+                return BadRequest("Impossible de récupérer l'employé connecté.");
+
+            var employe = await _context.Employes.FindAsync(user.EmployeId.Value);
+
+            ViewBag.EmployeId = employe.Id;
+            ViewBag.EmployeNom = $"{employe.Nom} {employe.Prenom}";
+
+            // Liste de toutes les formations pour le dropdown
+            ViewBag.Formations = await _context.Formations.ToListAsync();
+
+            return View();
+        }
+
+        // POST: Inscriptions/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Inscription inscription)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null || user.EmployeId == null)
+                    return BadRequest("Impossible de récupérer l'employé connecté.");
+
+                inscription.EmployeId = user.EmployeId.Value;
+                inscription.DateInscription = System.DateTime.Now;
+
+                _context.Add(inscription);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Formations = await _context.Formations.ToListAsync();
+            return View(inscription);
+        }
+
+        // GET: Inscriptions/Certificate/5
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Certificate(int id)
+        {
+            var inscription = await _context.Inscriptions
+                .Include(i => i.Employe)
+                .Include(i => i.Formation)
+                .FirstOrDefaultAsync(i => i.Id == id);
+
+            if (inscription == null) return NotFound();
+
+            var doc = new Documents.CertificateDocument(inscription);
+            var pdf = doc.GeneratePdf();
+
+            return File(pdf, "application/pdf", "Certificat.pdf");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ChangeStatus(int id, StatutInscription statut)
+        {
+            var inscription = await _context.Inscriptions.FindAsync(id);
+            if (inscription == null) return NotFound();
+
+            inscription.Statut = statut;
+            _context.Update(inscription);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+    }
 }
-
-<h1>Modifier inscription</h1>
-
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-
-    <div class="form-group">
-        <label asp-for="FormationId">Formation</label>
-        <select asp-for="FormationId" asp-items="ViewBag.FormationId" class="form-control"></select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="EmployeId">Employé</label>
-        <select asp-for="EmployeId" asp-items="ViewBag.EmployeId" class="form-control"></select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Statut">Statut</label>
-        <select asp-for="Statut" asp-items="Html.GetEnumSelectList(typeof(MvcMovie.Models.StatutInscription))" class="form-control"></select>
-    </div>
-
-    <div class="form-check mb-3">
-        <input asp-for="Presence" class="form-check-input" />
-        <label asp-for="Presence" class="form-check-label"></label>
-    </div>
-
-    <button type="submit" class="btn btn-success">Enregistrer</button>
-    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
-</form>

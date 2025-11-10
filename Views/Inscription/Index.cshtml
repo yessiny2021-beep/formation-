@@ -1,37 +1,83 @@
 @model IEnumerable<MvcMovie.Models.Inscription>
+@using System.Text
 
 @{
     ViewData["Title"] = "Liste des Inscriptions";
 }
 
-<h2>Liste des Inscriptions</h2>
+<div class="container mt-4">
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Employé</th>
-            <th>Formation</th>
-            <th>Date d'inscription</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
+    <h2 class="mb-4 text-white">📋 Liste des Inscriptions</h2>
+
+    @if (Model == null || !Model.Any())
     {
-        <tr>
-            <td>@item.Employe.Nom @item.Employe.Prenom</td>
-            <td>@item.Formation.Titre</td>
-            <td>@item.DateInscription.ToString("dd/MM/yyyy")</td>
-            <td>
-                <!-- Bouton pour télécharger certificat -->
-                <a asp-action="Certificate" asp-route-id="@item.Id" 
-                   class="btn btn-success btn-sm">
-                    🎓 Télécharger Certificat
-                </a>
-            </td>
-        </tr>
+        <p class="text-light">Aucune inscription pour le moment.</p>
     }
-    </tbody>
-</table>
+    else
+    {
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th class="text-white">Employé</th>
+                    <th class="text-white">Formation</th>
+                    <th class="text-white">Date d'inscription</th>
+                    <th class="text-white">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-white">
+                            @(item.Employe != null ? $"{item.Employe.Nom} {item.Employe.Prenom}" : "ℹ️ Employé inconnu")
+                        </td>
+                        <td class="text-white">
+                            @(item.Formation != null && !string.IsNullOrWhiteSpace(item.Formation.Titre) ? item.Formation.Titre : "ℹ️ Formation inconnue")
+                        </td>
+                        <td class="text-white">
+                            @(item.DateInscription.ToString("dd/MM/yyyy"))
+                        </td>
+                        <td>
+                            <a asp-action="Certificate" asp-route-id="@item.Id" class="btn btn-success btn-sm mb-1">
+                                🎓 Certificat
+                            </a>
 
-<a asp-action="Create" class="btn btn-primary">➕ Nouvelle Inscription</a>
+                            <form asp-action="ChangeStatus" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <select name="statut" class="form-select form-select-sm d-inline w-auto" onchange="this.form.submit()">
+                                    @{
+                                        // Construire les <option> en C# pour éviter la restriction Razor sur les attributs
+                                        var values = Enum.GetValues(typeof(MvcMovie.Models.StatutInscription))
+                                                         .Cast<MvcMovie.Models.StatutInscription>();
+                                        var sb = new StringBuilder();
+                                        foreach (var s in values)
+                                        {
+                                            sb.Append("<option value=\"");
+                                            sb.Append(s);
+                                            sb.Append("\"");
+                                            if (s == item.Statut)
+                                            {
+                                                sb.Append(" selected");
+                                            }
+                                            sb.Append(">");
+                                            sb.Append(s);
+                                            sb.Append("</option>");
+                                        }
+                                    }
+                                    @Html.Raw(sb.ToString())
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="mt-3">
+        <a asp-action="Create" class="btn btn-primary">
+            ➕ Nouvelle Inscription
+        </a>
+    </div>
+
+</div>

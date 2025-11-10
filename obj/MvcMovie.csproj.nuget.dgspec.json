@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/yessin/Desktop/company/MvcMovie/MvcMovie.csproj": {}
+    "/home/yessin/Desktop/stage d ete ec/MvcMovie/MvcMovie.csproj": {}
   },
   "projects": {
-    "/home/yessin/Desktop/company/MvcMovie/MvcMovie.csproj": {
+    "/home/yessin/Desktop/stage d ete ec/MvcMovie/MvcMovie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/yessin/Desktop/company/MvcMovie/MvcMovie.csproj",
+        "projectUniqueName": "/home/yessin/Desktop/stage d ete ec/MvcMovie/MvcMovie.csproj",
         "projectName": "MvcMovie",
-        "projectPath": "/home/yessin/Desktop/company/MvcMovie/MvcMovie.csproj",
+        "projectPath": "/home/yessin/Desktop/stage d ete ec/MvcMovie/MvcMovie.csproj",
         "packagesPath": "/home/yessin/.nuget/packages/",
-        "outputPath": "/home/yessin/Desktop/company/MvcMovie/obj/",
+        "outputPath": "/home/yessin/Desktop/stage d ete ec/MvcMovie/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/yessin/.nuget/NuGet/NuGet.Config"
@@ -53,23 +53,23 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.19, )"
+              "version": "[8.0.21, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.19, )"
+              "version": "[8.0.21, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[8.0.19, )"
+              "version": "[8.0.21, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.19, )"
+              "version": "[8.0.21, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
@@ -77,7 +77,7 @@
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.2, )"
             },
             "QuestPDF": {
               "target": "Package",

@@ -1,0 +1,51 @@
+@model IEnumerable<MvcMovie.Models.Formation>
+
+@{
+    ViewData["Title"] = "Tableau de Bord - Formations";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-white">📚 Tableau de Bord - Formations</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-light">Aucune formation disponible pour le moment.</p>
+    }
+    else
+    {
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th class="text-white">Titre</th>
+                    <th class="text-white">Date début</th>
+                    <th class="text-white">Date fin</th>
+                    <th class="text-white">Nb Inscriptions</th>
+                    <th class="text-white">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var formation in Model)
+                {
+                    <tr>
+                        <td class="text-white">
+                            @(string.IsNullOrWhiteSpace(formation.Titre) 
+                                ? "ℹ️ Titre non renseigné" 
+                                : formation.Titre)
+                        </td>
+                        <td class="text-white">@formation.DateDebut.ToString("dd/MM/yyyy")</td>
+                        <td class="text-white">@formation.DateFin.ToString("dd/MM/yyyy")</td>
+                        <td class="text-white">@((formation.Inscriptions?.Count) ?? 0)</td>
+                        <td>
+                            <a asp-action="Details"
+                               asp-route-id="@formation.Id"
+                               class="btn btn-success btn-sm">
+                                Voir
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

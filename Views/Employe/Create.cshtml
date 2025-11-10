@@ -1,24 +1,43 @@
 @model MvcMovie.Models.Employe
 
 @{
-    ViewData["Title"] = "Créer un employé";
+    ViewData["Title"] = "Ajouter un Employé";
 }
 
-<h1>Créer un employé</h1>
+<div class="container mt-4">
+    <h2 class="mb-4 text-white">@ViewData["Title"]</h2>
 
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="Nom"></label>
-        <input asp-for="Nom" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Prenom"></label>
-        <input asp-for="Prenom" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-success">Créer</button>
-    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
-</form>
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label asp-for="Nom" class="form-label text-white">Nom</label>
+            <input asp-for="Nom" class="form-control" />
+            <span asp-validation-for="Nom" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Prenom" class="form-label text-white">Prénom</label>
+            <input asp-for="Prenom" class="form-control" />
+            <span asp-validation-for="Prenom" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label text-white">Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DateEmbauche" class="form-label text-white">Date d'embauche</label>
+            <input asp-for="DateEmbauche" type="date" class="form-control"
+                   max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+            <span asp-validation-for="DateEmbauche" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Créer</button>
+        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

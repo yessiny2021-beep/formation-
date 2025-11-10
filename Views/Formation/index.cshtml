@@ -1,39 +1,230 @@
 @model IEnumerable<MvcMovie.Models.Formation>
 
 @{
-    ViewData["Title"] = "Formations";
+    ViewData["Title"] = "Gestion des Formations";
 }
 
-<h1>Formations</h1>
+<div class="animate-fade-in">
+    <!-- En-tête avec titre et bouton -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">
+            <i class="fas fa-book-open me-3"></i>
+            Gestion des Formations
+        </h1>
+        <a asp-action="Create" class="btn btn-primary btn-lg shine-effect">
+            <i class="fas fa-plus-circle me-2"></i>
+            Ajouter une Formation
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Ajouter une Formation</a>
-</p>
+    @if (Model == null || !Model.Any())
+    {
+        <div class="card text-center py-5">
+            <div class="card-body">
+                <i class="fas fa-book-open fa-4x text-muted mb-3"></i>
+                <h3 class="text-muted">Aucune formation disponible</h3>
+                <p class="text-muted">Créez votre première formation pour commencer</p>
+                <a asp-action="Create" class="btn btn-primary mt-3">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Créer une formation
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Statistiques rapides -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Total Formations</p>
+                                <h3 class="mb-0 fw-bold text-primary">@Model.Count()</h3>
+                            </div>
+                            <div class="rounded-circle p-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-book fa-2x text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Actives</p>
+                                <h3 class="mb-0 fw-bold text-success">@Model.Count(f => f.Statut == MvcMovie.Models.StatutFormation.Active)</h3>
+                            </div>
+                            <div class="rounded-circle p-3" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                <i class="fas fa-check-circle fa-2x text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Inactives</p>
+                                <h3 class="mb-0 fw-bold text-danger">@Model.Count(f => f.Statut == MvcMovie.Models.StatutFormation.Inactive)</h3>
+                            </div>
+                            <div class="rounded-circle p-3" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                                <i class="fas fa-times-circle fa-2x text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Terminées</p>
+                                <h3 class="mb-0 fw-bold text-warning">@Model.Count(f => f.Statut == MvcMovie.Models.StatutFormation.Terminee)</h3>
+                            </div>
+                            <div class="rounded-circle p-3" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                <i class="fas fa-flag-checkered fa-2x text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Titre</th>
-            <th>Description</th>
-            <th>Date Début</th>
-            <th>Date Fin</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Titre</td>
-                <td>@item.Description</td>
-                <td>@item.DateDebut.ToShortDateString()</td>
-                <td>@item.DateFin.ToShortDateString()</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Modifier</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Détails</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Supprimer</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <!-- Table des formations -->
+        <div class="card shadow-lg border-0">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Liste des Formations
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="fas fa-book me-2"></i>
+                                    Titre
+                                </th>
+                                <th>
+                                    <i class="fas fa-calendar-start me-2"></i>
+                                    Date début
+                                </th>
+                                <th>
+                                    <i class="fas fa-calendar-end me-2"></i>
+                                    Date fin
+                                </th>
+                                <th>
+                                    <i class="fas fa-clock me-2"></i>
+                                    Durée (h)
+                                </th>
+                                <th>
+                                    <i class="fas fa-users me-2"></i>
+                                    Capacité
+                                </th>
+                                <th>
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Statut
+                                </th>
+                                <th class="text-center">
+                                    <i class="fas fa-cog me-2"></i>
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var f in Model)
+                            {
+                                var statusClass = f.Statut switch
+                                {
+                                    MvcMovie.Models.StatutFormation.Active => "bg-success",
+                                    MvcMovie.Models.StatutFormation.Inactive => "bg-danger",
+                                    MvcMovie.Models.StatutFormation.Terminee => "bg-warning",
+                                    _ => "bg-secondary"
+                                };
+                                var statusIcon = f.Statut switch
+                                {
+                                    MvcMovie.Models.StatutFormation.Active => "fa-check-circle",
+                                    MvcMovie.Models.StatutFormation.Inactive => "fa-times-circle",
+                                    MvcMovie.Models.StatutFormation.Terminee => "fa-flag-checkered",
+                                    _ => "fa-question"
+                                };
+                                var statusText = f.Statut switch
+                                {
+                                    MvcMovie.Models.StatutFormation.Active => "Active",
+                                    MvcMovie.Models.StatutFormation.Inactive => "Inactive",
+                                    MvcMovie.Models.StatutFormation.Terminee => "Terminée",
+                                    _ => "Inconnu"
+                                };
+
+                                <tr class="animate-slide-left">
+                                    <td class="fw-semibold">
+                                        <i class="fas fa-graduation-cap text-primary me-2"></i>
+                                        @f.Titre
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info px-3 py-2">
+                                            <i class="fas fa-calendar-day me-1"></i>
+                                            @f.DateDebut.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info px-3 py-2">
+                                            <i class="fas fa-calendar-day me-1"></i>
+                                            @f.DateFin.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary px-3 py-2">
+                                            <i class="fas fa-hourglass-half me-1"></i>
+                                            @f.Duree h
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary px-3 py-2">
+                                            <i class="fas fa-users me-1"></i>
+                                            @f.Capacite
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge @statusClass px-3 py-2">
+                                            <i class="fas @statusIcon me-1"></i>
+                                            @statusText
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Details" asp-route-id="@f.Id" 
+                                               class="btn btn-sm btn-info" 
+                                               title="Voir les détails">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@f.Id" 
+                                               class="btn btn-sm btn-warning" 
+                                               title="Modifier">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@f.Id" 
+                                               class="btn btn-sm btn-danger" 
+                                               title="Supprimer">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

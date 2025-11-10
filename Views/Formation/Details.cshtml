@@ -1,25 +1,14 @@
 @model MvcMovie.Models.Formation
 
-@{
-    ViewData["Title"] = "Détails Formation";
-}
+<h2>Détails de la formation</h2>
 
-<h1>Détails Formation</h1>
+<p><strong>Titre :</strong> @Model.Titre</p>
+<p><strong>Description :</strong> @Model.Description</p>
+<p><strong>Date début :</strong> @Model.DateDebut.ToString("dd/MM/yyyy")</p>
+<p><strong>Date fin :</strong> @Model.DateFin.ToString("dd/MM/yyyy")</p>
+<p><strong>Durée :</strong> @Model.Duree heures</p>
+<p><strong>Capacité :</strong> @Model.Capacite</p>
+<p><strong>Statut :</strong> @Model.Statut</p>
+<p><strong>Inscriptions :</strong> @(Model.Inscriptions?.Count ?? 0)</p>
 
-<div>
-    <h4>@Model.Titre</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Description</dt>
-        <dd class="col-sm-10">@Model.Description</dd>
-
-        <dt class="col-sm-2">Date Début</dt>
-        <dd class="col-sm-10">@Model.DateDebut.ToShortDateString()</dd>
-
-        <dt class="col-sm-2">Date Fin</dt>
-        <dd class="col-sm-10">@Model.DateFin.ToShortDateString()</dd>
-    </dl>
-</div>
-
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Modifier</a>
-<a asp-action="Index" class="btn btn-secondary">Retour</a>
+<a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>

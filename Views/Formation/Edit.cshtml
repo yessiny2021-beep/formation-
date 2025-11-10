@@ -1,29 +1,52 @@
 @model MvcMovie.Models.Formation
 
-@{
-    ViewData["Title"] = "Modifier Formation";
-}
-
-<h1>Modifier Formation</h1>
+<h2>Modifier la formation</h2>
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label asp-for="Titre"></label>
-        <input asp-for="Titre" class="form-control"/>
+
+    <div class="mb-3">
+        <label asp-for="Titre" class="form-label"></label>
+        <input asp-for="Titre" class="form-control" />
+        <span asp-validation-for="Titre" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <input asp-for="Description" class="form-control"/>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="DateDebut"></label>
-        <input asp-for="DateDebut" type="date" class="form-control"/>
+
+    <div class="mb-3">
+        <label asp-for="DateDebut" class="form-label"></label>
+        <input asp-for="DateDebut" type="date" class="form-control" />
+        <span asp-validation-for="DateDebut" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="DateFin"></label>
-        <input asp-for="DateFin" type="date" class="form-control"/>
+
+    <div class="mb-3">
+        <label asp-for="DateFin" class="form-label"></label>
+        <input asp-for="DateFin" type="date" class="form-control" />
+        <span asp-validation-for="DateFin" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-success">Enregistrer</button>
+
+    <div class="mb-3">
+        <label asp-for="Duree" class="form-label"></label>
+        <input asp-for="Duree" type="number" class="form-control" />
+        <span asp-validation-for="Duree" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Capacite" class="form-label"></label>
+        <input asp-for="Capacite" type="number" class="form-control" />
+        <span asp-validation-for="Capacite" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Statut" class="form-label"></label>
+        <select asp-for="Statut" class="form-control" asp-items="Html.GetEnumSelectList<MvcMovie.Models.StatutFormation>()"></select>
+        <span asp-validation-for="Statut" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-warning">Enregistrer</button>
     <a asp-action="Index" class="btn btn-secondary">Annuler</a>
 </form>

@@ -1,0 +1,50 @@
+@model MvcMovie.Models.Inscription
+
+@{
+    ViewData["Title"] = "Détails de la formation";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-white">📘 Détails de ma formation</h2>
+
+    @if (Model == null)
+    {
+        <div class="alert alert-danger">
+            Impossible de trouver cette formation.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm p-4 mb-4 bg-dark text-white">
+            <h4 class="card-title text-info">
+                @(Model.Formation?.Titre ?? "❌ Aucune formation associée")
+            </h4>
+            <hr />
+
+            <p><strong>👤 Employé :</strong> @Model.Employe?.Nom @Model.Employe?.Prenom</p>
+            <p><strong>📅 Date d’inscription :</strong> @Model.DateInscription.ToString("dd/MM/yyyy")</p>
+            <p>
+                <strong>📖 Description :</strong> 
+                @(string.IsNullOrWhiteSpace(Model.Formation?.Description) 
+                    ? "ℹ️ Aucune description disponible" 
+                    : Model.Formation.Description)
+            </p>
+        </div>
+
+        <div class="mt-3">
+            <a asp-action="Index" class="btn btn-secondary">
+                ⬅️ Retour à mes formations
+            </a>
+            @* Bouton “Voir” uniquement si admin *@
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-controller="EmployeDashboard"
+                   asp-action="Details"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-success ms-2">
+                    Voir
+                </a>
+            }
+        </div>
+    }
+</div>

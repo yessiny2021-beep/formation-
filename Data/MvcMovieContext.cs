@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MvcMovie.Models;
 
 namespace MvcMovie.Data
 {
@@ -11,23 +12,33 @@ namespace MvcMovie.Data
         {
         }
 
-        // Définition des DbSet pour toutes les entités
+        // ✅ DbSet pour tes entités métier
         public DbSet<Movie> Movie { get; set; } = default!;
         public DbSet<Formation> Formations { get; set; } = default!;
         public DbSet<Employe> Employes { get; set; } = default!;
         public DbSet<Inscription> Inscriptions { get; set; } = default!;
 
-        // Configuration des relations et des contraintes
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Index unique pour éviter double inscription d'un employé à la même formation
+            // ✅ Fix global MySQL : éviter nvarchar(max)
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entity.GetProperties())
+                {
+                    if (property.ClrType == typeof(string) && property.GetMaxLength() == null)
+                    {
+                        property.SetMaxLength(256); // impose varchar(256) par défaut
+                    }
+                }
+            }
+
+            // ✅ Contraintes spécifiques pour tes entités
             modelBuilder.Entity<Inscription>()
                 .HasIndex(i => new { i.FormationId, i.EmployeId })
                 .IsUnique();
 
-            // Relations explicites
             modelBuilder.Entity<Inscription>()
                 .HasOne(i => i.Formation)
                 .WithMany(f => f.Inscriptions)

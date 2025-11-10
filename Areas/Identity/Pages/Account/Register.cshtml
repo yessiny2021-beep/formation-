@@ -1,0 +1,9 @@
+﻿var result = await _userManager.CreateAsync(user, Input.Password);
+if (result.Succeeded)
+{
+    // Attribuer automatiquement le rôle Employe
+    await _userManager.AddToRoleAsync(user, "Employe");
+
+    await _signInManager.SignInAsync(user, isPersistent: false);
+    return LocalRedirect(returnUrl);
+}

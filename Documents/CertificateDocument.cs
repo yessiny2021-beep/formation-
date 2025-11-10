@@ -22,7 +22,7 @@ namespace MvcMovie.Documents
             container.Page(page =>
             {
                 page.Margin(50);
-                page.Background(Colors.White);
+                page.PageColor(Colors.White); // ✅ remplace Background obsolète
 
                 page.Header()
                     .Text("🎓 Attestation de Formation")
@@ -37,13 +37,13 @@ namespace MvcMovie.Documents
                     col.Item().Text($"Ceci certifie que l'employé :")
                         .FontSize(14);
 
-                    col.Item().Text($"{_inscription.Employe.Nom} {_inscription.Employe.Prenom}")
+                    col.Item().Text($"{_inscription.Employe!.Nom} {_inscription.Employe!.Prenom}") // ✅ null-forgiving
                         .FontSize(18).Bold().FontColor(Colors.Blue.Medium);
 
                     col.Item().Text($"a suivi avec succès la formation :")
                         .FontSize(14);
 
-                    col.Item().Text($"{_inscription.Formation.Titre}")
+                    col.Item().Text($"{_inscription.Formation!.Titre}") // ✅ null-forgiving
                         .FontSize(18).Bold().FontColor(Colors.Green.Medium);
 
                     col.Item().Text($"Date : {_inscription.DateInscription:dd/MM/yyyy}")

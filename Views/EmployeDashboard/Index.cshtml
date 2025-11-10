@@ -1,0 +1,49 @@
+@model IEnumerable<MvcMovie.Models.Inscription>
+
+@{
+    ViewData["Title"] = "Mon Espace Formation";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-white">👨‍🎓 Mes Formations</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-light">Vous n’êtes inscrit à aucune formation pour le moment.</p>
+    }
+    else
+    {
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th>Formation</th>
+                    <th>Date d’inscription</th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>Détails</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var inscription in Model)
+                {
+                    <tr>
+                        <td class="text-white">@((inscription.Formation?.Titre) ?? "Formation inconnue")</td>
+                        <td class="text-white">@inscription.DateInscription.ToString("dd/MM/yyyy")</td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <a asp-controller="EmployeDashboard"
+                                   asp-action="Details"
+                                   asp-route-id="@inscription.Id"
+                                   class="btn btn-success btn-sm">
+                                    Voir
+                                </a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

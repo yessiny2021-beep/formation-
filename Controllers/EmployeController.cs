@@ -85,11 +85,16 @@ namespace MvcMovie.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
-        {
-            var employe = _context.Employes.Find(id);
-            _context.Employes.Remove(employe);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
-        }
+{
+    var employe = _context.Employes.Find(id);
+    if (employe != null)
+    {
+        _context.Employes.Remove(employe);
+        _context.SaveChanges();
+    }
+    return RedirectToAction(nameof(Index));
+}
+
+          
     }
 }
